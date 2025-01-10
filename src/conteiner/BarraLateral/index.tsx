@@ -1,14 +1,18 @@
 import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
 import FiltroCard from "../../componentes/FiltroCard"
 import { RootReducer } from "../../store"
 import { alterarTermo } from "../../store/reducer/filtro"
 
 import * as S from './styled'
 import * as enums from '../../util/enums/tarefa'
-import { Campo } from "../../styles"
+import { Botao, Campo } from "../../styles"
 
-
-const BarraLateral = () => {
+type Props = {
+    mostrarFiltro: boolean
+};
+const BarraLateral: React.FC<Props> = ({ mostrarFiltro }) => {
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const {termo} = useSelector((state: RootReducer) => state.filtro)
 
@@ -16,6 +20,8 @@ const BarraLateral = () => {
     return(
             <S.Aside>
                 <div>
+                    {mostrarFiltro ?(
+                        <>
                     <Campo
                     type="text"
                     placeholder="Buscar"
@@ -31,6 +37,11 @@ const BarraLateral = () => {
                     <FiltroCard valor={enums.Prioridade.NORMAL}criterio="prioridade" legenda="normal" />
                     <FiltroCard criterio="todas" legenda="todas"  />
                 </S.Filtros>
+                </>
+                    ): (
+                        <Botao type="button" onClick={() => navigate('/')}>Voltar a lista de tarefas</Botao>
+                    )
+                    }
                 </div>
             </S.Aside>
         )
